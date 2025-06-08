@@ -6,7 +6,6 @@ const RestaurantCard = ({ resData }) => {
     cuisines,
     sla: { slaString },
   } = resData.info;
-  console.log(name);
   return (
     <div className="res-card">
       <img
