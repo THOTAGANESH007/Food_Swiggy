@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 export default function Header() {
+  const [auth, setAuth] = useState(true);
   return (
     <div className="header">
       <div className="logo-container">
@@ -13,6 +16,9 @@ export default function Header() {
           <li>About Us</li>
           <li>Contact Us</li>
           <li>Cart</li>
+          <button onClick={() => setAuth(!auth)}>
+            {auth ? "Login" : "Logout"}
+          </button>
         </ul>
       </div>
     </div>

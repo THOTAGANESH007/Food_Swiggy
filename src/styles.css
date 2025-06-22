@@ -102,3 +102,64 @@
   background-color: #f8f8f8;
   border-radius: 6px;
 }
+
+/* shimmer animation base */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150px;
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* block layout matching the real card */
+.shimmer-image {
+  width: 100%;
+  height: 160px; /* matches image block */
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.shimmer-title {
+  width: 80%;
+  height: 24px; /* matches title height */
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.shimmer-subtitle {
+  width: 60%;
+  height: 18px; /* matches subtitle */
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.shimmer-footer {
+  width: 40%;
+  height: 16px; /* mimic rating or price row */
+  border-radius: 4px;
+}
