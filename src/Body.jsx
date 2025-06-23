@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
-import { resList } from "./constants";
 import axios from "axios";
 import ShimmerContainer from "./ShimmerContainer";
-const resObj = resList?.card?.card?.gridElements?.infoWithStyle.restaurants; //mock data
+import { Link } from "react-router-dom";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
@@ -21,13 +20,19 @@ const Body = () => {
 
       const response = await axios.get(SWIGGY_URL);
 
-      const res =
-        response.data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-          ?.restaurants;
-      setListOfRestaurants(res);
-      setFilteredRestaurants(res);
+      // Safely find the card that contains restaurants
+      const res = response.data?.data?.cards?.find(
+        (card) =>
+          card?.card?.card?.gridElements?.infoWithStyle?.restaurants !==
+          undefined
+      )?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+
+      setListOfRestaurants(res || []);
+      setFilteredRestaurants(res || []);
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching restaurant list:", error);
+      setListOfRestaurants([]);
+      setFilteredRestaurants([]);
     }
   };
 
@@ -46,23 +51,24 @@ const Body = () => {
   };
 
   const displayRestaurants = filteredRestaurants.map((restaurant) => (
-    <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+    <Link to={`/restaurantMenu/${restaurant.info.id}`} key={restaurant.info.id}>
+      <RestaurantCard resData={restaurant} />
+    </Link>
   ));
 
   return (
     <div className="body">
       <div className="search-container">
-        <button onClick={filterTopRated}>Top Rated Restaurant</button>
+        <button onClick={filterTopRated}>Top Rated Restaurants</button>
       </div>
       <div className="search-container">
         <input
           type="text"
+          placeholder="Search restaurants"
           value={searchText}
-          onChange={(e) => {
-            setSearchText(e.target.value);
-          }}
+          onChange={(e) => setSearchText(e.target.value)}
         />
-        <button onClick={filterRestaurantsOnSearch}>search </button>
+        <button onClick={filterRestaurantsOnSearch}>Search</button>
       </div>
 
       <div className="res-container">
@@ -75,4 +81,5 @@ const Body = () => {
     </div>
   );
 };
+
 export default Body;
